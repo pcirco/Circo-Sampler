@@ -27,7 +27,6 @@ struct ContentView: View {
             Button(action: {
                 recorder?.record()
                 print("recording")
-                print(recorder?.settings)
             }, label: {
                 Text("Record")
                 Image(systemName: "record.circle")
@@ -35,6 +34,7 @@ struct ContentView: View {
             
             Button(action: {
                 recorder?.stop()
+                setupMasterPlayer()
             }, label: {
                 Text("Stop")
                 Image(systemName: "stop.circle")
@@ -42,11 +42,7 @@ struct ContentView: View {
             
             Button(action: {
                 do {
-                    masterPlayer = try AVAudioPlayer(contentsOf: recorder!.url)
-                    masterPlayer?.prepareToPlay()
                     masterPlayer?.play()
-                } catch {
-                    print("Can't play: \(error)")
                 }
             }, label: {
                 Text("Play")
@@ -59,6 +55,7 @@ struct ContentView: View {
         Slider(value: $rate, in: 0.5...1.5)
             .onChange(of: rate, perform: { value in
                 masterPlayer?.rate = value
+                print(rate)
             })
         
         HStack{
@@ -123,8 +120,12 @@ struct ContentView: View {
         }
         
         recorder?.prepareToRecord()
-        masterPlayer?.enableRate = true
         
+    }
+    
+    func setupMasterPlayer() {
+        masterPlayer = try! AVAudioPlayer(contentsOf: recorder!.url)
+        masterPlayer?.enableRate = true
     }
     
 }
