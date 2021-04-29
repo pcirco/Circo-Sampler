@@ -16,6 +16,15 @@ import AVKit
  they have stored an audio clip in, the device will play the stored audio clip.
  */
 struct ContentView: View {
+    
+    static var player1: AVAudioPlayer?
+    static var player2: AVAudioPlayer?
+    static var player3: AVAudioPlayer?
+    static var player4: AVAudioPlayer?
+    static var player5: AVAudioPlayer?
+    static var player6: AVAudioPlayer?
+    static var player7: AVAudioPlayer?
+    static var player8: AVAudioPlayer?
 
     var body: some View {
         
@@ -37,6 +46,8 @@ struct ContentView_Previews: PreviewProvider {
 
 struct PlaybackView: View {
     
+    @State var alert = false
+    
     var body: some View {
         
         ZStack {
@@ -45,11 +56,30 @@ struct PlaybackView: View {
             
             VStack{
                 
-                Text("Playback Mode")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color("AccentColor"))
-                    .padding(.vertical)
+                HStack {
+                    
+                    Text("Playback Mode")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color("AccentColor"))
+                        .multilineTextAlignment(.center)
+                        .padding(.vertical)
+                    
+                    Button(action: {
+                        alert = true
+                    }, label: {
+                        Image(systemName: "info.circle.fill")
+                            .padding(.trailing)
+                    })
+                    .alert(isPresented: $alert, content: {
+                        Alert(title: Text("Circo Sampler"),
+                              message: Text("The Circo Sampler was developed by Paul Circo for the coding and composing course at the University of Nebraska-Lincoln.  Paul is a senior electrical engineering major with an emphasis in electronics and minors in physics and music technology.  In his free time, Paul loves watching sports, playing his trumpet, and listening to music.  Enjoy, and Go Big Red!"),
+                              dismissButton: .default(Text("Close")))
+                    })
+                    
+                    
+                }
+                
                 
                 HStack(){
                     
@@ -59,7 +89,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player1?.play()
+                            ContentView.player1?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                     
@@ -69,7 +99,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player2?.play()
+                            ContentView.player2?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                     
@@ -79,7 +109,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player3?.play()
+                            ContentView.player3?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                     
@@ -89,7 +119,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player4?.play()
+                            ContentView.player4?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                 }
@@ -103,7 +133,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player5?.play()
+                            ContentView.player5?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                     
@@ -113,7 +143,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player6?.play()
+                            ContentView.player6?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                     
@@ -123,7 +153,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player7?.play()
+                            ContentView.player7?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                     
@@ -133,7 +163,7 @@ struct PlaybackView: View {
                                     .fontWeight(.bold)
                                     .foregroundColor(Color("AccentColor")))
                         .onTapGesture {
-                            RecordView.player8?.play()
+                            ContentView.player8?.play()
                         }
                         .overlay(RoundedRectangle(cornerRadius: 50).stroke(Color("AccentColor"), lineWidth: 5))
                 }
@@ -155,19 +185,12 @@ struct RecordView: View {
     @State var recorder: AVAudioRecorder?
     @State var masterPlayer: AVAudioPlayer?
     
-    static var player1: AVAudioPlayer?
-    static var player2: AVAudioPlayer?
-    static var player3: AVAudioPlayer?
-    static var player4: AVAudioPlayer?
-    static var player5: AVAudioPlayer?
-    static var player6: AVAudioPlayer?
-    static var player7: AVAudioPlayer?
-    static var player8: AVAudioPlayer?
-    
     @State var docDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     @State var audioFile = URL(string: "")
     
     @State var rate = Float(1.0)
+    
+    @State var alert = false
     
     var body: some View {
         
@@ -177,11 +200,29 @@ struct RecordView: View {
             
             VStack {
                 
-                Text("Recording Mode")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color("AccentColor"))
-                    .padding(.vertical)
+                HStack {
+                    
+                    Text("Recording Mode")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color("AccentColor"))
+                        .multilineTextAlignment(.center)
+                        .padding(.vertical)
+                    
+                    Button(action: {
+                        alert = true
+                    }, label: {
+                        Image(systemName: "info.circle.fill")
+                            .padding(.trailing)
+                    })
+                    .alert(isPresented: $alert, content: {
+                        Alert(title: Text("Circo Sampler"),
+                              message: Text("The Circo Sampler was developed by Paul Circo for the coding and composing course at the University of Nebraska-Lincoln.  Paul is a senior electrical engineering major with an emphasis in electronics and minors in physics and music technology.  In his free time, Paul loves watching sports, playing his trumpet, and listening to music.  Enjoy, and Go Big Red!"),
+                              dismissButton: .default(Text("Close")))
+                    })
+                    
+                }
+                
                 
                 HStack{
                     
@@ -356,10 +397,10 @@ struct RecordView: View {
 
     func setupPlayer1() {
         do {
-            RecordView.player1 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player1?.enableRate = true
-            RecordView.player1?.rate = rate
-            RecordView.player1?.prepareToPlay()
+            ContentView.player1 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player1?.enableRate = true
+            ContentView.player1?.rate = rate
+            ContentView.player1?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
@@ -367,10 +408,10 @@ struct RecordView: View {
 
     func setupPlayer2() {
         do {
-            RecordView.player2 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player2?.enableRate = true
-            RecordView.player2?.rate = rate
-            RecordView.player2?.prepareToPlay()
+            ContentView.player2 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player2?.enableRate = true
+            ContentView.player2?.rate = rate
+            ContentView.player2?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
@@ -378,10 +419,10 @@ struct RecordView: View {
 
     func setupPlayer3() {
         do {
-            RecordView.player3 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player3?.enableRate = true
-            RecordView.player3?.rate = rate
-            RecordView.player3?.prepareToPlay()
+            ContentView.player3 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player3?.enableRate = true
+            ContentView.player3?.rate = rate
+            ContentView.player3?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
@@ -389,10 +430,10 @@ struct RecordView: View {
 
     func setupPlayer4() {
         do {
-            RecordView.player4 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player4?.enableRate = true
-            RecordView.player4?.rate = rate
-            RecordView.player4?.prepareToPlay()
+            ContentView.player4 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player4?.enableRate = true
+            ContentView.player4?.rate = rate
+            ContentView.player4?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
@@ -400,10 +441,10 @@ struct RecordView: View {
 
     func setupPlayer5() {
         do {
-            RecordView.player5 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player5?.enableRate = true
-            RecordView.player5?.rate = rate
-            RecordView.player5?.prepareToPlay()
+            ContentView.player5 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player5?.enableRate = true
+            ContentView.player5?.rate = rate
+            ContentView.player5?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
@@ -411,10 +452,10 @@ struct RecordView: View {
 
     func setupPlayer6() {
         do {
-            RecordView.player6 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player6?.enableRate = true
-            RecordView.player6?.rate = rate
-            RecordView.player6?.prepareToPlay()
+            ContentView.player6 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player6?.enableRate = true
+            ContentView.player6?.rate = rate
+            ContentView.player6?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
@@ -422,10 +463,10 @@ struct RecordView: View {
 
     func setupPlayer7() {
         do {
-            RecordView.player7 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player7?.enableRate = true
-            RecordView.player7?.rate = rate
-            RecordView.player7?.prepareToPlay()
+            ContentView.player7 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player7?.enableRate = true
+            ContentView.player7?.rate = rate
+            ContentView.player7?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
@@ -433,10 +474,10 @@ struct RecordView: View {
 
     func setupPlayer8() {
         do {
-            RecordView.player8 = try AVAudioPlayer(contentsOf: recorder!.url)
-            RecordView.player8?.enableRate = true
-            RecordView.player8?.rate = rate
-            RecordView.player8?.prepareToPlay()
+            ContentView.player8 = try AVAudioPlayer(contentsOf: recorder!.url)
+            ContentView.player8?.enableRate = true
+            ContentView.player8?.rate = rate
+            ContentView.player8?.prepareToPlay()
         } catch {
             print("Can't play: \(error)")
         }
